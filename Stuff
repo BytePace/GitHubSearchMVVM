@@ -1,0 +1,3 @@
+https://github.com/BytePace/GitHubSearchMVVM/blob/master/core/src/main/java/com/drus/githubsearch/core/presentation/BaseViewModelWithContext.kt - контекст во вью-модели это плохо
+Более того, у тебя два базовых класса вью моделей, что тоже не очень хорошо
+https://github.com/BytePace/GitHubSearchMVVM/blob/master/app/src/main/java/com/drus/githubsearch/mvvm/presentation/screens/BaseFragment.kt - forceRefresh
