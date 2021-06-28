@@ -25,6 +25,7 @@
 * [AdapterDelegates](https://github.com/sockeqwe/AdapterDelegates) (Адаптеры RV с разными вью-типами - легко!) *(Сомнительная библиотека, нужно получше проверить)*
 * [KeyboardVisibilityEvent](https://github.com/yshrsmz/KeyboardVisibilityEvent) (Библиотека для отслеживания состояния клавиатуры (Открыта\Закрыта))
 * [MPChart](https://github.com/PhilJay/MPAndroidChart) (Библиотека для рисования графиков)
+* [ViewBinding](https://developer.android.com/topic/libraries/view-binding) (библиотека для упрощения связывания UI-логики с xml-разметкой), стоит использовать вместо DataBinding, ибо она легче в использовании и не даёт писать java-код в xml.
 
 ## Советы по разработке:
 * желательно не игнорировать unit-тестирование (стоит обсуждать с руководством и непосредственно с заказчиком, т.к. на написание тестов тоже уходит время).
