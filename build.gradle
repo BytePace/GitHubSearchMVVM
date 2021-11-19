@@ -1,8 +1,8 @@
 buildscript {
-    ext.kotlin_version = "1.4.30"
-    ext.dagger_version = "2.27"
+    ext.kotlin_version = "1.5.20"
+    ext.dagger_version = "2.39.1"
     ext.retrofit_version = "2.9.0"
-    ext.okhttp_version = "4.9.0"
+    ext.okhttp_version = "4.9.1"
 
     repositories {
         google()

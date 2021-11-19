@@ -1,9 +1,8 @@
 package com.drus.githubsearch.mvvm.presentation.activity
 
 import android.os.Bundle
-import android.view.WindowManager
-import android.widget.EditText
 import androidx.activity.viewModels
+import com.drus.githubsearch.core.extensions.hideKeyboard
 import com.drus.githubsearch.core.navigation.Navigator
 import com.drus.githubsearch.core.utils.ViewModelFactory
 import com.drus.githubsearch.mvvm.R
@@ -18,20 +17,13 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val navigator by lazy {
         Navigator(this, R.id.fragment_container) {
-            closeKeyboard()
+            hideKeyboard(findViewById(R.id.fragment_container))
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    @Suppress("DEPRECATION")
-    override fun onResume() {
-        super.onResume()
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        viewModel.initKeyboardHandler(this)
     }
 
     override fun onResumeFragments() {
@@ -42,15 +34,5 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onPause() {
         super.onPause()
         viewModel.detach()
-    }
-
-    fun closeKeyboard() {
-        viewModel.closeKeyboard(
-            findViewById(R.id.fragment_container)
-        )
-    }
-
-    fun showKeyboard(view: EditText) {
-        viewModel.showKeyboard(view)
     }
 }

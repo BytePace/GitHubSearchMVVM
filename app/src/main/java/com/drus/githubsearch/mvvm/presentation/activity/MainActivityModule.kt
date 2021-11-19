@@ -1,12 +1,9 @@
 package com.drus.githubsearch.mvvm.presentation.activity
 
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModel
 import com.drus.githubsearch.core.utils.ActivityScope
 import com.drus.githubsearch.core.utils.FragmentScope
 import com.drus.githubsearch.core.utils.ViewModelKey
-import com.drus.githubsearch.core.utils.getSystemService
 import com.drus.githubsearch.mvvm.presentation.screens.repositoryDetails.RepositoryDetailsFragment
 import com.drus.githubsearch.mvvm.presentation.screens.repositoryDetails.RepositoryDetailsModule
 import com.drus.githubsearch.mvvm.presentation.screens.search.SearchFragment
@@ -35,12 +32,6 @@ interface MainActivityModule {
     fun contributeToRepositoryDetailsFragment(): RepositoryDetailsFragment
 
     companion object {
-        @Provides
-        @ActivityScope
-        fun provideInputManager(activity: MainActivity): InputMethodManager {
-            return activity.getSystemService<InputMethodManager>(Context.INPUT_METHOD_SERVICE)
-        }
-
         @Provides
         @ActivityScope
         fun provideCicerone() = Cicerone.create(Router())

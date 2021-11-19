@@ -7,7 +7,6 @@ import com.drus.githubsearch.core.utils.ViewModelFactory
 import com.drus.githubsearch.mvvm.R
 import com.drus.githubsearch.mvvm.databinding.FragmentSearchRepositoriesBinding
 import com.drus.githubsearch.mvvm.presentation.screens.BaseFragment
-import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
 class SearchFragment :
@@ -16,7 +15,6 @@ class SearchFragment :
     lateinit var viewModelFactory: ViewModelFactory
     override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
-    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.startInit(viewLifecycleOwner)

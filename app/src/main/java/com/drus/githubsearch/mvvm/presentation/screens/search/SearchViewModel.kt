@@ -4,7 +4,6 @@ import android.text.Editable
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.drus.githubsearch.core.presentation.BaseViewModel
 import com.drus.githubsearch.mvvm.R
 import com.drus.githubsearch.mvvm.Screens
 import com.drus.githubsearch.mvvm.data.screens.search.TextValidationStatus
@@ -14,7 +13,6 @@ import com.drus.githubsearch.mvvm.presentation.screens.search.validation.SearchV
 import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
 import com.drus.githubsearch.networking.repository.GitHubRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
@@ -23,13 +21,13 @@ class SearchViewModel @Inject constructor(
     private val networkRepository: GitHubRepository,
     private val validationUtil: SearchValidationUtil,
     private val router: Router
-) : BaseViewModel() {
+) : ViewModel() {
 
     val repositoriesAdapter = RepositoriesAdapter {
         router.navigateTo(Screens.repositoryDetails(it))
     }
 
-    val isSourceEmpty = MutableLiveData<Boolean>(true)
+    val isSourceEmpty = MutableLiveData(true)
 
     val errorStateText: LiveData<Int?>
         get() = validationUtil.validationStatusLiveData.map {
@@ -42,11 +40,9 @@ class SearchViewModel @Inject constructor(
 
     private val searchText = MutableLiveData<String>("")
 
-    @FlowPreview
     private val searchState: LiveData<String>
         get() = searchText.asFlow().debounce(SEARCH_DEBOUNCE).asLiveData(Dispatchers.Default)
 
-    @FlowPreview
     private val dataSource = Transformations.switchMap(searchState) {
         LivePagedListBuilder(
             RepositoriesDataSourceFactory(it, networkRepository, viewModelScope),
@@ -76,7 +72,6 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    @FlowPreview
     fun startInit(lifecycleOwner: LifecycleOwner) {
         dataSource.observe(lifecycleOwner, Observer {
             if (it.isNotEmpty()) isSourceEmpty.value = false

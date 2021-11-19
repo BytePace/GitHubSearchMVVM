@@ -8,7 +8,9 @@ import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
 
 object Screens {
     fun search() = BaseScreen(SearchFragment())
-    fun repositoryDetails(info: SimpleRepositoryInfo) = BaseScreen(RepositoryDetailsFragment(), bundleOf(
-        RepositoryDetailsFragment.INFO to info
-    ))
+
+    fun repositoryDetails(info: SimpleRepositoryInfo) = BaseScreen(
+        RepositoryDetailsFragment(),
+        bundleOf(RepositoryDetailsFragment.INFO to info)
+    )
 }

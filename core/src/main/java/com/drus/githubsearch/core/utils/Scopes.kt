@@ -1,9 +1,6 @@
 package com.drus.githubsearch.core.utils
 
-import androidx.lifecycle.ViewModel
-import dagger.MapKey
 import javax.inject.Scope
-import kotlin.reflect.KClass
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
