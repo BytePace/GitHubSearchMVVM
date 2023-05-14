@@ -7,8 +7,8 @@ pluginManagement {
 }
 
 rootProject.name = "GitHubSearchMVVM"
-include ':core'
-include ':networking'
-include ':app'
-include ':search'
-include ':navigation'
+include(":core")
+include(":networking")
+include(":app")
+include(":search")
+include(":navigation")
