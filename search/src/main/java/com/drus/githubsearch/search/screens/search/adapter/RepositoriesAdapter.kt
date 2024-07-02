@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.adapters.SimpleDiffUtilCallback
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
 

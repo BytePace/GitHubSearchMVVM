@@ -3,8 +3,8 @@ package com.drus.githubsearch.search.screens.repositoryDetails
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.drus.githubsearch.core.presentation.BaseViewModel
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
-import com.drus.githubsearch.networking.repository.GitHubRepository
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

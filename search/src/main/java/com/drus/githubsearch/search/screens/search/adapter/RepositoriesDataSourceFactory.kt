@@ -2,8 +2,8 @@ package com.drus.githubsearch.search.screens.search.adapter
 
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
-import com.drus.githubsearch.networking.repository.GitHubRepository
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

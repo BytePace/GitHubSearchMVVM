@@ -1,30 +1,44 @@
-package com.drus.githubsearch.search.screens.search
+package com.drus.githubsearch.search.screens.search.presentation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.drus.githubsearch.core.utils.ViewModelFactory
-import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.adapters.setErrorText
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
-import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.FlowPreview
+import com.drus.githubsearch.search.screens.search.adapter.RepositoriesAdapter
 import javax.inject.Inject
 
-class SearchFragment : DaggerFragment(R.layout.fragment_search_repositories) {
+class SearchGithubRepositoryFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<SearchViewModel> { viewModelFactory }
-    private val binding by viewBinding(FragmentSearchRepositoriesBinding::bind)
+    private val viewModel by viewModels<SearchGithubRepositoryViewModel> { viewModelFactory }
+    private var _binding: FragmentSearchRepositoriesBinding? = null
+    private val binding get() = _binding!!
 
 
-    @FlowPreview
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchRepositoriesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    private val repositoriesAdapter = RepositoriesAdapter {
+        viewModel.processEvent(SearchEvent.OnRepositoryClick(it))
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.startInit(viewLifecycleOwner)
+//        viewModel.startInit()
         binding.searchInputLayout.apply {
             editText.addTextChangedListener {
                 viewModel.onSearchTextChanged(it)
@@ -36,7 +50,7 @@ class SearchFragment : DaggerFragment(R.layout.fragment_search_repositories) {
             layoutManager?.onRestoreInstanceState(
                 savedInstanceState?.getParcelable(RV_STATE)
             )
-            adapter = viewModel.repositoriesAdapter
+            adapter = repositoriesAdapter
         }
     }
 

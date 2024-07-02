@@ -1,15 +1,14 @@
-package com.drus.githubsearch.search.screens.search
+package com.drus.githubsearch.search.screens.search.presentation
 
 import android.text.Editable
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.drus.githubsearch.core.presentation.BaseViewModel
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
-import com.drus.githubsearch.networking.repository.GitHubRepository
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.Screens
-import com.drus.githubsearch.search.screens.search.adapter.RepositoriesAdapter
 import com.drus.githubsearch.search.screens.search.adapter.RepositoriesDataSourceFactory
 import com.drus.githubsearch.search.screens.search.validation.SearchValidationUtil
 import com.drus.githubsearch.search.utils.TextValidationStatus
@@ -19,17 +18,32 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(
+class SearchGithubRepositoryViewModel @Inject constructor(
     private val networkRepository: GitHubRepository,
     private val validationUtil: SearchValidationUtil,
-    private val router: Router
-) : BaseViewModel() {
+    private val router: Router,
+) : BaseViewModel<SearchState, SearchEvent, SearchCommand>() {
 
-    val repositoriesAdapter = RepositoriesAdapter {
-        router.navigateTo(Screens.repositoryDetails(it))
+
+    override fun initState(): SearchState {
+        return SearchState()
     }
 
-    val isSourceEmpty = MutableLiveData<Boolean>(true)
+    init {
+        startInit()
+    }
+
+    override fun processEvent(event: SearchEvent) {
+        when (event) {
+            is SearchEvent.OnRepositoryClick -> navigateToRepositoryDetails(event.repositoryInfo)
+        }
+    }
+
+    private fun navigateToRepositoryDetails(repositoryInfo: SimpleRepositoryInfo) {
+        router.navigateTo(Screens.repositoryDetails(repositoryInfo))
+    }
+
+    val isSourceEmpty = MutableLiveData(true)
 
     val errorStateText: LiveData<Int?>
         get() = validationUtil.validationStatusLiveData.map {
@@ -40,7 +54,7 @@ class SearchViewModel @Inject constructor(
             }
         }
 
-    private val searchText = MutableLiveData<String>("")
+    private val searchText = MutableLiveData("")
 
     @FlowPreview
     private val searchState: LiveData<String>
@@ -76,8 +90,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    @FlowPreview
-    fun startInit(lifecycleOwner: LifecycleOwner) {
+    fun startInit() {
         dataSource.observe(lifecycleOwner, Observer {
             if (it.isNotEmpty()) isSourceEmpty.value = false
             repositoriesAdapter.submitList(it)

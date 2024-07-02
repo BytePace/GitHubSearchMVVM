@@ -1,4 +1,4 @@
-package com.drus.githubsearch.networking.models
+package com.drus.githubsearch.search.screens.search.data.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
@@ -13,5 +13,5 @@ data class SimpleRepositoryInfo(
     @SerializedName("owner")
     val repositoryOwner: RepositoryOwner,
     @SerializedName("pushed_at")
-    val date: String
+    val date: String,
 ): Parcelable

@@ -1,14 +1,14 @@
-package com.drus.githubsearch.networking
+package com.drus.githubsearch.search.screens.search.data
 
-import com.drus.githubsearch.networking.models.RepositoryDetails
-import com.drus.githubsearch.networking.models.RepositoryInfoList
+import com.drus.githubsearch.search.screens.search.data.models.RepositoryDetails
+import com.drus.githubsearch.search.screens.search.data.models.RepositoryInfoList
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface NetworkService {
+interface GithubRepositoriesApi {
     @GET("search/repositories")
     fun searchRepositories(
         @Query("q") keyWord: String,

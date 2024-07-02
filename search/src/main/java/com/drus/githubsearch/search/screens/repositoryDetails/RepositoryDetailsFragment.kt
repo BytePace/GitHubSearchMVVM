@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.drus.githubsearch.core.utils.ViewModelFactory
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.adapters.setSafeClickListener
 import com.drus.githubsearch.search.databinding.FragmentRepositoryDetailsBinding

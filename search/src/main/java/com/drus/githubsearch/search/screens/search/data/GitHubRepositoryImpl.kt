@@ -1,18 +1,17 @@
-package com.drus.githubsearch.networking.repository
+package com.drus.githubsearch.search.screens.search.data
 
-import com.drus.githubsearch.networking.NetworkService
-import com.drus.githubsearch.networking.models.RepositoryDetails
-import com.drus.githubsearch.networking.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.data.models.RepositoryDetails
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import java.lang.NullPointerException
 import javax.inject.Inject
 
 class GitHubRepositoryImpl @Inject constructor(
-    private val networkService: NetworkService
-): GitHubRepository {
+    private val githubRepositoriesApi: GithubRepositoriesApi
+): com.drus.githubsearch.search.screens.search.domain.GitHubRepository {
 
     override suspend fun getDetails(info: SimpleRepositoryInfo?): RepositoryDetails? {
         info ?: throw NullPointerException()
-        val response = networkService.getRepositoryDetails(
+        val response = githubRepositoriesApi.getRepositoryDetails(
             info.repositoryOwner.userName,
             info.repositoryName
         ).await()
@@ -27,7 +26,7 @@ class GitHubRepositoryImpl @Inject constructor(
         count: Int
     ): List<SimpleRepositoryInfo> {
         if (keyword.isNullOrBlank()) return emptyList()
-        val response = networkService.searchRepositories(
+        val response = githubRepositoriesApi.searchRepositories(
             keyword,
             getPageNumberByPosition(from, count),
             count
