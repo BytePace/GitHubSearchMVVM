@@ -1,4 +1,4 @@
-package com.drus.githubsearch.networking
+package com.drus.githubsearch.core.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module

@@ -1,25 +1,35 @@
-package com.drus.githubsearch.search.screens.repositoryDetails
+package com.drus.githubsearch.search.screens.repositoryDetails.presentation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.drus.githubsearch.core.utils.SaveClickListener
 import com.drus.githubsearch.core.utils.ViewModelFactory
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.R
-import com.drus.githubsearch.search.adapters.setSafeClickListener
 import com.drus.githubsearch.search.databinding.FragmentRepositoryDetailsBinding
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class RepositoryDetailsFragment : DaggerFragment(R.layout.fragment_repository_details) {
+class GithubRepositoryDetailsFragment : DaggerFragment(R.layout.fragment_repository_details) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<RepositoryDetailsViewModel> { viewModelFactory }
-    private val binding by viewBinding(FragmentRepositoryDetailsBinding::bind)
+    private val viewModel by viewModels<GithubRepositoryDetailsViewModel> { viewModelFactory }
+    private var _binding: FragmentRepositoryDetailsBinding? = null
+    private val binding get() = requireNotNull(_binding)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,20 +37,26 @@ class RepositoryDetailsFragment : DaggerFragment(R.layout.fragment_repository_de
             viewModel.startInit(it)
         }
         binding.title.apply {
-            setSafeClickListener {
+            setOnClickListener(SaveClickListener {
                 viewModel.back()
             }
+            )
         }
         binding.date.apply {
-            setSafeClickListener {
+            setOnClickListener(SaveClickListener {
                 viewModel.back()
-            }
+            })
             viewModel.date.observe(viewLifecycleOwner) {
                 text = it
-                isVisible = it != null && it.isNotEmpty()
+//                isVisible = it != null && it.isNotEmpty()
             }
 
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
@@ -49,7 +65,7 @@ class RepositoryDetailsFragment : DaggerFragment(R.layout.fragment_repository_de
 
         fun newInstance(
             info: SimpleRepositoryInfo
-        ) = RepositoryDetailsFragment().apply {
+        ) = GithubRepositoryDetailsFragment().apply {
             arguments = bundleOf(
                 INFO to info
             )

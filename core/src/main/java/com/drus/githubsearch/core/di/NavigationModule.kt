@@ -1,4 +1,4 @@
-package com.drus.githubsearch.navigation
+package com.drus.githubsearch.core.di
 
 import com.drus.githubsearch.core.utils.AppScope
 import com.github.terrakok.cicerone.Cicerone

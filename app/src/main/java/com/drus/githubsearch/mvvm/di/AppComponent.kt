@@ -1,9 +1,10 @@
-package com.drus.githubsearch.mvvm.dagger
+package com.drus.githubsearch.mvvm.di
 
 import com.drus.githubsearch.core.utils.AppScope
 import com.drus.githubsearch.mvvm.App
-import com.drus.githubsearch.navigation.NavigationModule
-import com.drus.githubsearch.networking.NetworkModule
+import com.drus.githubsearch.core.di.NavigationModule
+import com.drus.githubsearch.core.di.NetworkModule
+import com.drus.githubsearch.mvvm.activity.MainViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -24,4 +25,6 @@ interface AppComponent : AndroidInjector<App> {
 
         fun build(): AppComponent
     }
+
+    fun mainViewModelFactory(): MainViewModel.Factory
 }

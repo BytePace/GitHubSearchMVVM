@@ -1,8 +1,7 @@
-package com.drus.githubsearch.mvvm.dagger
+package com.drus.githubsearch.mvvm.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.drus.githubsearch.core.utils.ActivityScope
 import com.drus.githubsearch.core.utils.ApplicationContext
 import com.drus.githubsearch.core.utils.ViewModelFactory
 import com.drus.githubsearch.mvvm.App

@@ -3,7 +3,7 @@ package com.drus.githubsearch.core.utils
 import android.os.SystemClock
 import android.view.View
 
-class SafeClickListener(
+class SaveClickListener(
     private var defaultInterval: Int = 1000,
     private val onSafeClick: (View) -> Unit
 ) : View.OnClickListener {

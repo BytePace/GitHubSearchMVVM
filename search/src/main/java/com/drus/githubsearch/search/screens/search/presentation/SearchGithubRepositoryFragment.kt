@@ -8,16 +8,19 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.drus.githubsearch.core.utils.ViewModelFactory
-import com.drus.githubsearch.search.adapters.setErrorText
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
+import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
 import com.drus.githubsearch.search.screens.search.adapter.RepositoriesAdapter
-import javax.inject.Inject
 
 class SearchGithubRepositoryFragment : Fragment() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<SearchGithubRepositoryViewModel> { viewModelFactory }
+
+
+    private val viewModel by viewModels<SearchGithubRepositoryViewModel> {
+        SearchGithubRepositoryViewModel.provideFactory(
+            (parentFragment as SearchGithubRepositoryComponentProvider).getSearchGithubRepositoryComponent()
+                .searchGithubRepositoryViewModelFactory()
+        )
+    }
     private var _binding: FragmentSearchRepositoriesBinding? = null
     private val binding get() = _binding!!
 
@@ -43,7 +46,7 @@ class SearchGithubRepositoryFragment : Fragment() {
             editText.addTextChangedListener {
                 viewModel.onSearchTextChanged(it)
             }
-            setErrorText(viewModel.errorStateText.value)
+//            setErrorText(viewModel.errorStateText.value)
         }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -52,6 +55,11 @@ class SearchGithubRepositoryFragment : Fragment() {
             )
             adapter = repositoriesAdapter
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

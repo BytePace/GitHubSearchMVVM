@@ -3,16 +3,14 @@ package com.drus.githubsearch.search.screens.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.adapters.SimpleDiffUtilCallback
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 
 class RepositoriesAdapter(
     private val onItemSelected: (SimpleRepositoryInfo) -> Unit
-) : PagedListAdapter<SimpleRepositoryInfo, RepositoriesAdapter.ViewHolder>(
-    SimpleDiffUtilCallback<SimpleRepositoryInfo>()
-) {
+) : PagedListAdapter<SimpleRepositoryInfo, RepositoriesAdapter.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -35,6 +33,24 @@ class RepositoriesAdapter(
                 binding.textRepository.text = info.repositoryName
                 binding.textOwner.text = info.repositoryOwner.userName
                 binding.textDate.text = info.date
+            }
+        }
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<SimpleRepositoryInfo>() {
+            override fun areItemsTheSame(
+                oldItem: SimpleRepositoryInfo,
+                newItem: SimpleRepositoryInfo
+            ): Boolean {
+                return oldItem.repositoryURL == newItem.repositoryURL
+            }
+
+            override fun areContentsTheSame(
+                oldItem: SimpleRepositoryInfo,
+                newItem: SimpleRepositoryInfo
+            ): Boolean {
+                return oldItem == newItem
             }
         }
     }

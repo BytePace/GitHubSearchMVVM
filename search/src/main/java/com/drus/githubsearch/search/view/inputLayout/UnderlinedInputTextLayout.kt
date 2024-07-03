@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.UnderlinedInputLayoutBinding
 import com.drus.githubsearch.search.view.ErrorShowingView

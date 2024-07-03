@@ -13,12 +13,14 @@ import com.drus.githubsearch.search.screens.search.adapter.RepositoriesDataSourc
 import com.drus.githubsearch.search.screens.search.validation.SearchValidationUtil
 import com.drus.githubsearch.search.utils.TextValidationStatus
 import com.github.terrakok.cicerone.Router
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import javax.inject.Inject
 
-class SearchGithubRepositoryViewModel @Inject constructor(
+class SearchGithubRepositoryViewModel @AssistedInject constructor(
     private val networkRepository: GitHubRepository,
     private val validationUtil: SearchValidationUtil,
     private val router: Router,
@@ -60,14 +62,14 @@ class SearchGithubRepositoryViewModel @Inject constructor(
     private val searchState: LiveData<String>
         get() = searchText.asFlow().debounce(SEARCH_DEBOUNCE).asLiveData(Dispatchers.Default)
 
-    @FlowPreview
-    private val dataSource = Transformations.switchMap(searchState) {
-        LivePagedListBuilder(
-            RepositoriesDataSourceFactory(it, networkRepository, viewModelScope),
-            pagingConfig
-        ).setBoundaryCallback(boundaryCallback)
-            .build()
-    }
+//    @FlowPreview
+//    private val dataSource = Transformations.switchMap(searchState) {
+//        LivePagedListBuilder(
+//            RepositoriesDataSourceFactory(it, networkRepository, viewModelScope),
+//            pagingConfig
+//        ).setBoundaryCallback(boundaryCallback)
+//            .build()
+//    }
 
     private val pagingConfig = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
@@ -91,13 +93,26 @@ class SearchGithubRepositoryViewModel @Inject constructor(
     }
 
     fun startInit() {
-        dataSource.observe(lifecycleOwner, Observer {
-            if (it.isNotEmpty()) isSourceEmpty.value = false
-            repositoriesAdapter.submitList(it)
-        })
+//        dataSource.observe(lifecycleOwner, Observer {
+//            if (it.isNotEmpty()) isSourceEmpty.value = false
+//            repositoriesAdapter.submitList(it)
+//        })
     }
 
-    private companion object {
+    @AssistedFactory
+    interface Factory {
+        fun create(): SearchGithubRepositoryViewModel
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    companion object {
         const val SEARCH_DEBOUNCE = 500L
+        fun provideFactory(
+            assistedFactory: Factory,
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create() as T
+            }
+        }
     }
 }
