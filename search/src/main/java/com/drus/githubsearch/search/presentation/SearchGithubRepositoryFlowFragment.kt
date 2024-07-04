@@ -43,9 +43,10 @@ class SearchGithubRepositoryFlowFragment : Fragment(), SearchGithubRepositoryCom
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fragmentTransaction = childFragmentManager.beginTransaction()
+        val fragment = SearchGithubRepositoryFragment()
         fragmentTransaction
-            .replace(R.id.container, SearchGithubRepositoryFragment(), tag)
-            .addToBackStack(SearchGithubRepositoryFragment().javaClass.canonicalName)
+            .replace(R.id.container, fragment, tag)
+            .addToBackStack(fragment.javaClass.canonicalName)
             .setReorderingAllowed(true)
             .commit()
         childFragmentManager.executePendingTransactions()

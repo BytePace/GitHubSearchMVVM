@@ -47,9 +47,10 @@ class SearchGithubRepositoryFragment : Fragment() {
 
     private val repositoriesAdapter = RepositoriesAdapter {
         val fragmentTransaction = parentFragmentManager.beginTransaction()
+        val fragment = GithubRepositoryDetailsFragment.newInstance(it)
         fragmentTransaction
-            .replace(R.id.container, GithubRepositoryDetailsFragment.newInstance(it), tag)
-            .addToBackStack(SearchGithubRepositoryFragment().javaClass.canonicalName)
+            .replace(R.id.container, fragment, tag)
+            .addToBackStack(fragment.javaClass.canonicalName)
             .setReorderingAllowed(true)
             .commit()
         parentFragmentManager.executePendingTransactions()

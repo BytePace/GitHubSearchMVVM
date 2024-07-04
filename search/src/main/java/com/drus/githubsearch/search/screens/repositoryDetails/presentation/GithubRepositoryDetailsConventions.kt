@@ -5,10 +5,12 @@ import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryI
 
 data class GithubRepositoryDetailsState(
     val screenState: LoadingContentError = LoadingContentError.Init,
+    val repositoryName: String = "",
+    val lastCommitDate: String = "",
 )
 
 sealed interface GithubRepositoryDetailsEvent {
-    data class OnRepositoryClick(val repositoryInfo: SimpleRepositoryInfo) : GithubRepositoryDetailsEvent
+    data object OnBackButtonClick : GithubRepositoryDetailsEvent
 }
 
 sealed interface GithubRepositoryDetailsCommand {

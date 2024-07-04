@@ -7,18 +7,25 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.core.utils.SaveClickListener
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.FragmentRepositoryDetailsBinding
 import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import kotlinx.coroutines.launch
 
 class GithubRepositoryDetailsFragment : Fragment(R.layout.fragment_repository_details) {
 
     private val viewModel by viewModels<GithubRepositoryDetailsViewModel> {
         GithubRepositoryDetailsViewModel.provideFactory(
-            (parentFragment as SearchGithubRepositoryComponentProvider).getSearchGithubRepositoryComponent()
-                .githubRepositoryDetailsViewModelFactory()
+            assistedFactory = (parentFragment as SearchGithubRepositoryComponentProvider)
+                .getSearchGithubRepositoryComponent()
+                .githubRepositoryDetailsViewModelFactory(),
+            info = requireArguments().getParcelable(INFO),
         )
     }
     private var _binding: FragmentRepositoryDetailsBinding? = null
@@ -35,24 +42,38 @@ class GithubRepositoryDetailsFragment : Fragment(R.layout.fragment_repository_de
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireArguments().getParcelable<SimpleRepositoryInfo>(INFO)?.let {
-            viewModel.startInit(it)
-        }
-        binding.title.apply {
-            setOnClickListener(SaveClickListener {
-                viewModel.back()
-            }
-            )
-        }
-        binding.date.apply {
-            setOnClickListener(SaveClickListener {
-                viewModel.back()
-            })
-            viewModel.date.observe(viewLifecycleOwner) {
-                text = it
-//                isVisible = it != null && it.isNotEmpty()
-            }
+        observeState()
+        bindBackButton()
+    }
 
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.state.collect { state ->
+                    when (state.screenState) {
+                        LoadingContentError.Content -> updateScreenInfo(state.lastCommitDate)
+                        LoadingContentError.Error -> Unit
+                        LoadingContentError.Init -> updateRepositoryName(state.repositoryName)
+                        LoadingContentError.Loading -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateScreenInfo(date: String) {
+        with(binding.lastCommitDate) {
+            text = date
+        }
+    }
+
+    private fun updateRepositoryName(repositoryName: String) {
+        binding.repositoryName.text = repositoryName
+    }
+
+    private fun bindBackButton() {
+        binding.backArrow.setOnClickListener {
+            viewModel.processEvent(GithubRepositoryDetailsEvent.OnBackButtonClick)
         }
     }
 
