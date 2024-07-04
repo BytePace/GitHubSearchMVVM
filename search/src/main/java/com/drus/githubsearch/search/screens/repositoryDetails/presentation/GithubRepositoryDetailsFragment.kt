@@ -8,17 +8,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.drus.githubsearch.core.utils.SaveClickListener
-import com.drus.githubsearch.core.utils.ViewModelFactory
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.FragmentRepositoryDetailsBinding
+import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import javax.inject.Inject
 
 class GithubRepositoryDetailsFragment : Fragment(R.layout.fragment_repository_details) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<GithubRepositoryDetailsViewModel> { viewModelFactory }
+    private val viewModel by viewModels<GithubRepositoryDetailsViewModel> {
+        GithubRepositoryDetailsViewModel.provideFactory(
+            (parentFragment as SearchGithubRepositoryComponentProvider).getSearchGithubRepositoryComponent()
+                .githubRepositoryDetailsViewModelFactory()
+        )
+    }
     private var _binding: FragmentRepositoryDetailsBinding? = null
     private val binding get() = requireNotNull(_binding)
 

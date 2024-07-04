@@ -13,10 +13,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drus.githubsearch.core.utils.LoadingContentError
+import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
 import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
+import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsFragment
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.search.presentation.adapter.RepositoriesAdapter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SearchGithubRepositoryFragment : Fragment() {
@@ -42,26 +46,22 @@ class SearchGithubRepositoryFragment : Fragment() {
     }
 
     private val repositoriesAdapter = RepositoriesAdapter {
-        viewModel.processEvent(SearchEvent.OnRepositoryClick(it))
+        val fragmentTransaction = parentFragmentManager.beginTransaction()
+        fragmentTransaction
+            .replace(R.id.container, GithubRepositoryDetailsFragment.newInstance(it), tag)
+            .addToBackStack(SearchGithubRepositoryFragment().javaClass.canonicalName)
+            .setReorderingAllowed(true)
+            .commit()
+        parentFragmentManager.executePendingTransactions()
+//        viewModel.processEvent(SearchEvent.OnRepositoryClick(it))
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeState()
-        binding.searchInputLayout.apply {
-            editText.addTextChangedListener {
-                viewModel.onSearchTextChanged(it)
-            }
-//            setErrorText(viewModel.errorStateText.value)
-        }
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            layoutManager?.onRestoreInstanceState(
-                savedInstanceState?.getParcelable(RV_STATE)
-            )
-            adapter = repositoriesAdapter
-        }
+        bindSearchInput()
+        bindRepositoryRecyclerView(savedInstanceState)
     }
 
     private fun observeState() {
@@ -79,18 +79,36 @@ class SearchGithubRepositoryFragment : Fragment() {
         }
     }
 
-    private suspend fun uploadScreenInfo(repositories: PagingData<SimpleRepositoryInfo>) {
-        repositoriesAdapter.submitData(repositories)
+    private suspend fun uploadScreenInfo(repositories: Flow<PagingData<SimpleRepositoryInfo>>) {
+        lifecycleScope.launch {
+            repositories.collectLatest {
+                repositoriesAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun bindSearchInput() {
+        binding.searchInputLayout.apply {
+            editText.addTextChangedListener {
+                viewModel.processEvent(SearchEvent.OnSearchTextChanged(it.toString()))
+            }
+        }
+    }
+
+    private fun bindRepositoryRecyclerView(savedInstanceState: Bundle?) {
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager?.onRestoreInstanceState(
+                savedInstanceState?.getParcelable(RV_STATE)
+            )
+            adapter = repositoriesAdapter
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(RV_STATE, binding.recyclerView.layoutManager?.onSaveInstanceState())
     }
 
     private companion object {

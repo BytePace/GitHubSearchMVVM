@@ -22,7 +22,7 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
 ) : BaseViewModel<GithubRepositoryDetailsState, GithubRepositoryDetailsEvent, GithubRepositoryDetailsCommand>() {
 
     override fun initState(): GithubRepositoryDetailsState {
-        TODO("Not yet implemented")
+        return GithubRepositoryDetailsState()
     }
 
     init {
@@ -30,7 +30,9 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
     }
 
     override fun processEvent(event: GithubRepositoryDetailsEvent) {
-        TODO("Not yet implemented")
+       when (event) {
+           is GithubRepositoryDetailsEvent.OnRepositoryClick -> {}
+       }
     }
 
     val info = MutableLiveData<SimpleRepositoryInfo>()
@@ -57,7 +59,6 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
 
     @Suppress("UNCHECKED_CAST")
     companion object {
-        const val SEARCH_DEBOUNCE = 500L
         fun provideFactory(
             assistedFactory: Factory,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
