@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.drus.githubsearch.core.presentation.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.networking.GitHubRepository
+import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
+import com.drus.githubsearch.search.domain.GitHubRepository
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 import com.github.terrakok.cicerone.Router
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -47,7 +48,7 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
             emitNewState {
                 it.copy(
                     screenState = LoadingContentError.Content,
-                    lastCommitDate = details?.commit?.details?.author?.date ?: "",
+                    lastCommitDate = details?.commitDate ?: "",
                 )
             }
         }

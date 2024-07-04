@@ -1,10 +1,9 @@
-package com.drus.githubsearch.networking.di
+package com.drus.githubsearch.search.di
 
 import com.drus.githubsearch.core.utils.AppScope
-import com.drus.githubsearch.core.utils.FeatureScope
-import com.drus.githubsearch.networking.GitHubRepository
-import com.drus.githubsearch.networking.data.GitHubRepositoryImpl
-import com.drus.githubsearch.networking.data.GithubRepositoriesApi
+import com.drus.githubsearch.search.data.GitHubRepositoryImpl
+import com.drus.githubsearch.search.data.GithubRepositoriesApi
+import com.drus.githubsearch.search.domain.GitHubRepository
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

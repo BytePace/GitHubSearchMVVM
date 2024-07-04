@@ -1,7 +1,6 @@
 package com.drus.githubsearch.search.screens.repositoryDetails.presentation
 
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
 
 data class GithubRepositoryDetailsState(
     val screenState: LoadingContentError = LoadingContentError.Init,

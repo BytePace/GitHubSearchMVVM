@@ -1,17 +1,14 @@
-package com.drus.githubsearch.networking.data.models
+package com.drus.githubsearch.search.data.models
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class SimpleRepositoryInfo(
+data class SimpleRepositoryInfoDto(
     @SerializedName("name")
     val repositoryName: String,
     @SerializedName("url")
     val repositoryURL: String,
     @SerializedName("owner")
-    val repositoryOwner: RepositoryOwner,
+    val repositoryOwner: RepositoryOwnerDto,
     @SerializedName("pushed_at")
     val date: String,
-): Parcelable
+)

@@ -1,10 +1,8 @@
-package com.drus.githubsearch.networking
+package com.drus.githubsearch.search.data
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.drus.githubsearch.networking.data.GithubRepositoriesApi
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 
 
 class GithubRepositoryPagingSource(
@@ -31,7 +29,7 @@ class GithubRepositoryPagingSource(
                 nextPageNumber + 1
             }
             LoadResult.Page(
-                data = result.body()?.list ?: emptyList(),
+                data = result.body()?.list?.map { it.toDomain() } ?: emptyList(),
                 prevKey = null,
                 nextKey = nextPage,
             )

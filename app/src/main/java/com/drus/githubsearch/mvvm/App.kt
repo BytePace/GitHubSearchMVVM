@@ -10,16 +10,16 @@ import com.drus.githubsearch.core.di.NetworkModule
 import com.drus.githubsearch.mvvm.di.AppComponent
 import com.drus.githubsearch.mvvm.di.AppComponentProvider
 import com.drus.githubsearch.mvvm.di.DaggerAppComponent
-import com.drus.githubsearch.networking.GitHubRepository
-import com.drus.githubsearch.networking.data.GithubRepositoriesApi
-import com.drus.githubsearch.search.di.SearchComponentDependencies
-import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsViewModel
-import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryViewModel
+import com.drus.githubsearch.search.di.DaggerSearchGithubRepositoryComponent
+import com.drus.githubsearch.search.di.SearchGithubRepositoryComponent
+import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
+import com.drus.githubsearch.search.di.SearchGithubRepositoryModule
 
 class App : Application(), AppComponentProvider,
-    BaseComponentProvider, SearchComponentDependencies {
+    BaseComponentProvider, SearchGithubRepositoryComponentProvider {
     private lateinit var appComponent: AppComponent
     private lateinit var baseComponent: BaseComponent
+    private lateinit var searchGithubRepositoryComponent: SearchGithubRepositoryComponent
     override fun onCreate() {
         initDagger()
         super.onCreate()
@@ -34,6 +34,10 @@ class App : Application(), AppComponentProvider,
         appComponent = DaggerAppComponent.builder()
             .baseDependencies(baseComponent)
             .build()
+        searchGithubRepositoryComponent = DaggerSearchGithubRepositoryComponent.builder()
+            .searchGithubRepositoryModule(SearchGithubRepositoryModule())
+            .baseDependencies(baseComponent)
+            .build()
     }
 
     override fun getAppComponent(): AppComponent {
@@ -44,19 +48,7 @@ class App : Application(), AppComponentProvider,
         return baseComponent
     }
 
-    override fun getGithubRepositoriesApi(): GithubRepositoriesApi {
-        return appComponent.getGithubRepositoriesApi()
-    }
-
-    override fun getGitHubRepository(): GitHubRepository {
-        return appComponent.getGitHubRepository()
-    }
-
-    override fun getSearchGithubRepositoryViewModel(): SearchGithubRepositoryViewModel.Factory {
-        return appComponent.getSearchGithubRepositoryViewModel()
-    }
-
-    override fun getGithubRepositoryDetailsViewModel(): GithubRepositoryDetailsViewModel.Factory {
-        return appComponent.getGithubRepositoryDetailsViewModel()
+    override fun getSearchGithubRepositoryComponent(): SearchGithubRepositoryComponent {
+       return searchGithubRepositoryComponent
     }
 }

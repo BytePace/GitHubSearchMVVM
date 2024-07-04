@@ -1,11 +1,12 @@
-package com.drus.githubsearch.networking.data
+package com.drus.githubsearch.search.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.drus.githubsearch.networking.GitHubRepository
-import com.drus.githubsearch.networking.GithubRepositoryPagingSource
-import com.drus.githubsearch.networking.data.models.RepositoryDetails
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.domain.GitHubRepository
+import com.drus.githubsearch.search.data.models.RepositoryDetailsDto
+import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
+import com.drus.githubsearch.search.domain.models.RepositoryDetails
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class GitHubRepositoryImpl @Inject constructor(
         ).await()
         if (!response.isSuccessful)
             throw Exception(response.errorBody()?.string())
-        return response.body()
+        return response.body()?.toDomain()
     }
 
     override suspend fun search(

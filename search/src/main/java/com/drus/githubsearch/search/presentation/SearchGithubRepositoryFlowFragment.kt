@@ -12,7 +12,7 @@ package com.drus.githubsearch.search.presentation
 //import com.drus.githubsearch.search.di.DaggerSearchGithubRepositoryComponent
 //import com.drus.githubsearch.search.di.SearchGithubRepositoryComponent
 //import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
-//import com.drus.githubsearch.networking.di.SearchGithubRepositoryModule
+//import com.drus.githubsearch.search.di.SearchGithubRepositoryModule
 //import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryFragment
 //
 //class SearchGithubRepositoryFlowFragment : Fragment(), SearchGithubRepositoryComponentProvider {

@@ -1,7 +1,7 @@
 package com.drus.githubsearch.search.di
 
-import com.drus.githubsearch.networking.GitHubRepository
-import com.drus.githubsearch.networking.data.GithubRepositoriesApi
+import com.drus.githubsearch.search.domain.GitHubRepository
+import com.drus.githubsearch.search.data.GithubRepositoriesApi
 import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsViewModel
 import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryViewModel
 

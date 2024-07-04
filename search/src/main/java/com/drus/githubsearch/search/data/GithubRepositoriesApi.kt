@@ -1,7 +1,7 @@
-package com.drus.githubsearch.networking.data
+package com.drus.githubsearch.search.data
 
-import com.drus.githubsearch.networking.data.models.RepositoryDetails
-import com.drus.githubsearch.networking.data.models.RepositoryInfoList
+import com.drus.githubsearch.search.data.models.RepositoryDetailsDto
+import com.drus.githubsearch.search.data.models.RepositoryInfoListDto
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,11 +14,11 @@ interface GithubRepositoriesApi {
         @Query("q") keyWord: String,
         @Query("page") pageNum: Int,
         @Query("per_page") sizePage: Int
-    ): Deferred<Response<RepositoryInfoList>>
+    ): Deferred<Response<RepositoryInfoListDto>>
 
     @GET("repos/{owner}/{repo}/branches/master")
     fun getRepositoryDetails(
         @Path("owner") owner: String,
         @Path("repo") repo: String
-    ): Deferred<Response<RepositoryDetails>>
+    ): Deferred<Response<RepositoryDetailsDto>>
 }

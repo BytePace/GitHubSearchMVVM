@@ -1,6 +1,7 @@
 package com.drus.githubsearch.search
 
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsFragment
 import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen

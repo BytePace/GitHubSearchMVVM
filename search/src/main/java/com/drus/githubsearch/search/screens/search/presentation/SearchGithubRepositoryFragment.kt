@@ -13,9 +13,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
-import com.drus.githubsearch.search.di.SearchComponentDependencies
+import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.search.presentation.adapter.RepositoriesAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -26,8 +27,9 @@ class SearchGithubRepositoryFragment : Fragment() {
 
     private val viewModel by viewModels<SearchGithubRepositoryViewModel> {
         SearchGithubRepositoryViewModel.provideFactory(
-            assistedFactory = (activity?.application as SearchComponentDependencies)
-                .getSearchGithubRepositoryViewModel(),
+            assistedFactory = (activity?.application as SearchGithubRepositoryComponentProvider)
+                .getSearchGithubRepositoryComponent()
+                .searchGithubRepositoryViewModelFactory(),
         )
     }
     private var _binding: FragmentSearchRepositoriesBinding? = null
@@ -60,7 +62,7 @@ class SearchGithubRepositoryFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.state.collect { state ->
                     when (state.screenState) {
-                        LoadingContentError.Content -> uploadScreenInfo(state.repositories)
+                        LoadingContentError.Content -> uploadScreenInfo(state)
                         LoadingContentError.Error -> Unit
                         LoadingContentError.Init -> Unit
                         LoadingContentError.Loading -> Unit
@@ -70,9 +72,15 @@ class SearchGithubRepositoryFragment : Fragment() {
         }
     }
 
-    private suspend fun uploadScreenInfo(repositories: Flow<PagingData<SimpleRepositoryInfo>>) {
+    private suspend fun uploadScreenInfo(state: SearchState) {
+        if(state.error.isBlank()) {
+            binding.searchInputLayout.hideError()
+        } else {
+            binding.searchInputLayout.showError(state.error)
+        }
+
         lifecycleScope.launch {
-            repositories.collectLatest {
+            state.repositories.collectLatest {
                 repositoriesAdapter.submitData(it)
             }
         }

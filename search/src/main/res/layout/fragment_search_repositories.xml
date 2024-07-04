@@ -14,7 +14,7 @@
         android:imeOptions="actionDone"
         android:maxLength="20"
         android:singleLine="true"
-        app:placeholderText="nhfhfn"
+        app:placeholderText="retrofit"
         app:titleText="@string/search_hint" />
 
     <androidx.recyclerview.widget.RecyclerView

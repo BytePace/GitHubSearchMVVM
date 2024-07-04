@@ -2,12 +2,12 @@ package com.drus.githubsearch.search.screens.search.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
-import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
+import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 
 class RepositoriesAdapter(
     private val onItemSelected: (SimpleRepositoryInfo) -> Unit
