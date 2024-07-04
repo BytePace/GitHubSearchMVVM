@@ -47,7 +47,7 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
     }
 
     fun back() {
-        router.exit()
+        router.newChain()
     }
 
     @AssistedFactory

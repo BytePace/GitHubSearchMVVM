@@ -1,7 +1,7 @@
 package com.drus.githubsearch.mvvm.activity
 
 data class MainState(
-    val text: String?,
+    val text: String = "",
 )
 
 sealed interface MainEvent

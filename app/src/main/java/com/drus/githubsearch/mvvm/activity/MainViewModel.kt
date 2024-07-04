@@ -10,6 +10,7 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.MainScope
 import javax.inject.Inject
 
 class MainViewModel @AssistedInject constructor(
@@ -20,11 +21,14 @@ class MainViewModel @AssistedInject constructor(
     private var isFirstAttach = true
 
     override fun initState(): MainState {
-        TODO("Not yet implemented")
+        return MainState()
     }
 
     override fun processEvent(event: MainEvent) {
-        TODO("Not yet implemented")
+        when(event) {
+
+            else -> {}
+        }
     }
 
 
@@ -32,7 +36,7 @@ class MainViewModel @AssistedInject constructor(
         holder.removeNavigator()
         holder.setNavigator(navigator)
         if (isFirstAttach) {
-            router.newRootChain(Screens.search())
+            router.newRootChain(Screens.searchFlow())
             isFirstAttach = false
         }
     }
