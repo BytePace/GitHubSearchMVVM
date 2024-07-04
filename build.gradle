@@ -3,7 +3,7 @@ buildscript {
         kotlin_version = "1.9.20"
         dagger_version = "2.51.1"
         retrofit_version = "2.11.0"
-        okhttp_version = "4.9.3"
+        okhttp_version = "4.12.0"
     }
 }
 
