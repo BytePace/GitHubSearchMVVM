@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.drus.githubsearch.core.presentation.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.networking.GitHubRepository
 import com.github.terrakok.cicerone.Router
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

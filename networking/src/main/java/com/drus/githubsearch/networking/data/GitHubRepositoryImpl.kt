@@ -1,17 +1,18 @@
-package com.drus.githubsearch.search.screens.search.data
+package com.drus.githubsearch.networking.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.drus.githubsearch.search.screens.search.data.models.RepositoryDetails
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.screens.search.domain.GithubRepositoryPagingSource
+import com.drus.githubsearch.networking.GitHubRepository
+import com.drus.githubsearch.networking.GithubRepositoryPagingSource
+import com.drus.githubsearch.networking.data.models.RepositoryDetails
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GitHubRepositoryImpl @Inject constructor(
     private val githubRepositoriesApi: GithubRepositoriesApi
-) : com.drus.githubsearch.search.screens.search.domain.GitHubRepository {
+) : GitHubRepository {
 
     override suspend fun getDetails(info: SimpleRepositoryInfo?): RepositoryDetails? {
         info ?: throw NullPointerException()
@@ -40,15 +41,5 @@ class GitHubRepositoryImpl @Inject constructor(
                 )
             }
         )
-//        if (!response.isSuccessful)
-//            throw Exception(response.errorBody()?.string())
-//        return response.body()?.list ?: listOf()
-    }
-
-    private fun getPageNumberByPosition(from: Int, count: Int): Int {
-        if (from == 0) return 1
-        if (count == 0) throw IllegalArgumentException("page size must not be null")
-        if (from < count) return 1
-        return from / count + 1
     }
 }

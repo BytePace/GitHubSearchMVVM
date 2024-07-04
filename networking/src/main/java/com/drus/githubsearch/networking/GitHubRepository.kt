@@ -1,8 +1,8 @@
-package com.drus.githubsearch.search.screens.search.domain
+package com.drus.githubsearch.networking
 
 import androidx.paging.Pager
-import com.drus.githubsearch.search.screens.search.data.models.RepositoryDetails
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.networking.data.models.RepositoryDetails
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
 
 interface GitHubRepository {
     suspend fun search(

@@ -1,7 +1,7 @@
-package com.drus.githubsearch.search.screens.search.data
+package com.drus.githubsearch.networking.data
 
-import com.drus.githubsearch.search.screens.search.data.models.RepositoryDetails
-import com.drus.githubsearch.search.screens.search.data.models.RepositoryInfoList
+import com.drus.githubsearch.networking.data.models.RepositoryDetails
+import com.drus.githubsearch.networking.data.models.RepositoryInfoList
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET

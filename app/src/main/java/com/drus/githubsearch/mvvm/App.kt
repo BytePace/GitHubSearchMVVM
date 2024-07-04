@@ -10,12 +10,14 @@ import com.drus.githubsearch.core.di.NetworkModule
 import com.drus.githubsearch.mvvm.di.AppComponent
 import com.drus.githubsearch.mvvm.di.AppComponentProvider
 import com.drus.githubsearch.mvvm.di.DaggerAppComponent
+import com.drus.githubsearch.networking.GitHubRepository
+import com.drus.githubsearch.networking.data.GithubRepositoriesApi
 import com.drus.githubsearch.search.di.SearchComponentDependencies
-import com.github.terrakok.cicerone.Router
-import retrofit2.Retrofit
+import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsViewModel
+import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryViewModel
 
 class App : Application(), AppComponentProvider,
-    BaseComponentProvider {
+    BaseComponentProvider, SearchComponentDependencies {
     private lateinit var appComponent: AppComponent
     private lateinit var baseComponent: BaseComponent
     override fun onCreate() {
@@ -40,5 +42,21 @@ class App : Application(), AppComponentProvider,
 
     override fun getBaseComponent(): BaseComponent {
         return baseComponent
+    }
+
+    override fun getGithubRepositoriesApi(): GithubRepositoriesApi {
+        return appComponent.getGithubRepositoriesApi()
+    }
+
+    override fun getGitHubRepository(): GitHubRepository {
+        return appComponent.getGitHubRepository()
+    }
+
+    override fun getSearchGithubRepositoryViewModel(): SearchGithubRepositoryViewModel.Factory {
+        return appComponent.getSearchGithubRepositoryViewModel()
+    }
+
+    override fun getGithubRepositoryDetailsViewModel(): GithubRepositoryDetailsViewModel.Factory {
+        return appComponent.getGithubRepositoryDetailsViewModel()
     }
 }

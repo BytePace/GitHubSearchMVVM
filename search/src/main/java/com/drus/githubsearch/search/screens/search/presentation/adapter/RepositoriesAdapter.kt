@@ -7,7 +7,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
 
 class RepositoriesAdapter(
     private val onItemSelected: (SimpleRepositoryInfo) -> Unit

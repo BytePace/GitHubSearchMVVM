@@ -2,7 +2,7 @@ package com.drus.githubsearch.search.screens.search.presentation
 
 import androidx.paging.PagingData
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

@@ -26,17 +26,16 @@ class MainViewModel @AssistedInject constructor(
 
     override fun processEvent(event: MainEvent) {
         when(event) {
-
-            else -> {}
+            is MainEvent.OnResumeFragments -> setNavigator(event.navigator)
         }
     }
 
 
-    fun setNavigator(navigator: Navigator) {
+    private fun setNavigator(navigator: Navigator) {
         holder.removeNavigator()
         holder.setNavigator(navigator)
         if (isFirstAttach) {
-            router.newRootChain(Screens.searchFlow())
+            router.newRootChain(Screens.search())
             isFirstAttach = false
         }
     }
@@ -48,7 +47,6 @@ class MainViewModel @AssistedInject constructor(
 
     @Suppress("UNCHECKED_CAST")
     companion object {
-        const val SEARCH_DEBOUNCE = 500L
         fun provideFactory(
             assistedFactory: Factory,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {

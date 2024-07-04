@@ -7,8 +7,8 @@ import androidx.paging.cachedIn
 import com.drus.githubsearch.core.presentation.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.search.Screens
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
+import com.drus.githubsearch.networking.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.networking.GitHubRepository
 import com.drus.githubsearch.search.screens.search.validation.SearchValidationUtil
 import com.github.terrakok.cicerone.Router
 import dagger.assisted.AssistedFactory

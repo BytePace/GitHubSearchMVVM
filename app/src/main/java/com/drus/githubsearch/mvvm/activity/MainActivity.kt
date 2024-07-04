@@ -30,6 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        viewModel.setNavigator(navigator)
+        viewModel.processEvent(MainEvent.OnResumeFragments(navigator))
     }
 }

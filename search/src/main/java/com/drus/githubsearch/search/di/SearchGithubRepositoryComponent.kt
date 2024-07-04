@@ -2,17 +2,17 @@ package com.drus.githubsearch.search.di
 
 import com.drus.githubsearch.core.di.BaseDependencies
 import com.drus.githubsearch.core.utils.FeatureScope
+import com.drus.githubsearch.networking.di.SearchGithubRepositoryModule
 import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsViewModel
 import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryViewModel
 import dagger.Component
-import javax.inject.Singleton
 
-@FeatureScope
-@Component(
-    modules = [SearchGithubRepositoryModule::class],
-    dependencies = [BaseDependencies::class]
-)
-interface SearchGithubRepositoryComponent {
-    fun searchGithubRepositoryViewModelFactory(): SearchGithubRepositoryViewModel.Factory
-    fun githubRepositoryDetailsViewModelFactory(): GithubRepositoryDetailsViewModel.Factory
-}
+//@FeatureScope
+//@Component(
+//    modules = [SearchGithubRepositoryModule::class],
+//    dependencies = [BaseDependencies::class]
+//)
+//interface SearchGithubRepositoryComponent {
+//    fun searchGithubRepositoryViewModelFactory(): SearchGithubRepositoryViewModel.Factory
+//    fun githubRepositoryDetailsViewModelFactory(): GithubRepositoryDetailsViewModel.Factory
+//}

@@ -1,4 +1,4 @@
-package com.drus.githubsearch.search.screens.search.data.models
+package com.drus.githubsearch.networking.data.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

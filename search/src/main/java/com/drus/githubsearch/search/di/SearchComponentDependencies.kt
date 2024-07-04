@@ -1,9 +1,13 @@
 package com.drus.githubsearch.search.di
 
-import com.github.terrakok.cicerone.Router
-import retrofit2.Retrofit
+import com.drus.githubsearch.networking.GitHubRepository
+import com.drus.githubsearch.networking.data.GithubRepositoriesApi
+import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsViewModel
+import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryViewModel
 
 interface SearchComponentDependencies {
-    fun getRetrofit(): Retrofit
-    fun getRouter(): Router
+    fun getGithubRepositoriesApi(): GithubRepositoriesApi
+    fun getGitHubRepository(): GitHubRepository
+    fun getSearchGithubRepositoryViewModel(): SearchGithubRepositoryViewModel.Factory
+    fun getGithubRepositoryDetailsViewModel(): GithubRepositoryDetailsViewModel.Factory
 }
