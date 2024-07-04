@@ -1,8 +1,9 @@
-package com.drus.githubsearch.search.screens.search.adapter
+package com.drus.githubsearch.search.screens.search.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
@@ -10,7 +11,7 @@ import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryI
 
 class RepositoriesAdapter(
     private val onItemSelected: (SimpleRepositoryInfo) -> Unit
-) : PagedListAdapter<SimpleRepositoryInfo, RepositoriesAdapter.ViewHolder>(diffUtil) {
+) : PagingDataAdapter<SimpleRepositoryInfo, RepositoriesAdapter.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))

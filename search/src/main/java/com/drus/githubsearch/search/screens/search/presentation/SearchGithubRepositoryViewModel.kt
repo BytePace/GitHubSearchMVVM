@@ -1,15 +1,15 @@
 package com.drus.githubsearch.search.screens.search.presentation
 
 import android.text.Editable
+import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import androidx.paging.cachedIn
 import com.drus.githubsearch.core.presentation.BaseViewModel
-import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.Screens
-import com.drus.githubsearch.search.screens.search.adapter.RepositoriesDataSourceFactory
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import com.drus.githubsearch.search.screens.search.validation.SearchValidationUtil
 import com.drus.githubsearch.search.utils.TextValidationStatus
 import com.github.terrakok.cicerone.Router
@@ -17,8 +17,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class SearchGithubRepositoryViewModel @AssistedInject constructor(
     private val networkRepository: GitHubRepository,
@@ -29,10 +30,6 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
 
     override fun initState(): SearchState {
         return SearchState()
-    }
-
-    init {
-        startInit()
     }
 
     override fun processEvent(event: SearchEvent) {
@@ -47,20 +44,20 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
 
     val isSourceEmpty = MutableLiveData(true)
 
-    val errorStateText: LiveData<Int?>
-        get() = validationUtil.validationStatusLiveData.map {
-            if (it.searchText.status != TextValidationStatus.CORRECT && it.searchText.showErrorState) {
-                R.string.search_text_too_small_error
-            } else {
-                null
-            }
-        }
+//    val errorStateText: LiveData<Int?>
+//        get() = validationUtil.validationStatusLiveData.map {
+//            if (it.searchText.status != TextValidationStatus.CORRECT && it.searchText.showErrorState) {
+//                R.string.search_text_too_small_error
+//            } else {
+//                null
+//            }
+//        }
 
     private val searchText = MutableLiveData("")
 
-    @FlowPreview
-    private val searchState: LiveData<String>
-        get() = searchText.asFlow().debounce(SEARCH_DEBOUNCE).asLiveData(Dispatchers.Default)
+//    @FlowPreview
+//    private val searchState: LiveData<String>
+//        get() = searchText.asFlow().debounce(SEARCH_DEBOUNCE).asLiveData(Dispatchers.Default)
 
 //    @FlowPreview
 //    private val dataSource = Transformations.switchMap(searchState) {
@@ -84,19 +81,28 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
 
     fun onSearchTextChanged(text: Editable?) {
         val result = text.toString()
+        Log.d("search", "onSearchTextChanged: $result")
+        searchRepositories(result)
         validationUtil.validateSearchText(result, true)
-        searchText.value = if (validationUtil.validationStatusLiveData.value?.isAllValid == true) {
-            result
+        if (validationUtil.validationStatusLiveData.value?.isAllValid == true) {
+            searchText.value = result
+
         } else {
-            ""
+            searchText.value = ""
         }
+
     }
 
-    fun startInit() {
-//        dataSource.observe(lifecycleOwner, Observer {
-//            if (it.isNotEmpty()) isSourceEmpty.value = false
-//            repositoriesAdapter.submitList(it)
-//        })
+    private fun searchRepositories(keyword: String) {
+        viewModelScope.launch {
+            Log.d("search", "searchRepositories: $keyword")
+            networkRepository.search(keyword, 0, 1).flow.cachedIn(viewModelScope)
+                .collectLatest { data ->
+                    emitNewState {
+                        it.copy(repositories = data)
+                    }
+                }
+        }
     }
 
     @AssistedFactory

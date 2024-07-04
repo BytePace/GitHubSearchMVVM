@@ -7,10 +7,17 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
 import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
-import com.drus.githubsearch.search.screens.search.adapter.RepositoriesAdapter
+import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
+import com.drus.githubsearch.search.screens.search.presentation.adapter.RepositoriesAdapter
+import kotlinx.coroutines.launch
 
 class SearchGithubRepositoryFragment : Fragment() {
 
@@ -41,7 +48,7 @@ class SearchGithubRepositoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.startInit()
+        observeState()
         binding.searchInputLayout.apply {
             editText.addTextChangedListener {
                 viewModel.onSearchTextChanged(it)
@@ -55,6 +62,25 @@ class SearchGithubRepositoryFragment : Fragment() {
             )
             adapter = repositoriesAdapter
         }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.state.collect { state ->
+                    when (state.screenState) {
+                        LoadingContentError.Content -> uploadScreenInfo(state.repositories)
+                        LoadingContentError.Error -> Unit
+                        LoadingContentError.Init -> Unit
+                        LoadingContentError.Loading -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun uploadScreenInfo(repositories: PagingData<SimpleRepositoryInfo>) {
+        repositoriesAdapter.submitData(repositories)
     }
 
     override fun onDestroyView() {
