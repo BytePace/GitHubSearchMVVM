@@ -22,8 +22,7 @@ class GithubRepositoryPagingSource(
             val response =
                 api.searchRepositories(keyWord = query, pageNum = nextPageNumber, sizePage = 15)
                     .await()
-            if (!response.isSuccessful)
-                throw Exception(response.errorBody()?.string())
+            if (!response.isSuccessful) throw Exception(response.errorBody()?.string())
             val nextPage = if (response.body()?.list?.size == response.body()?.totalCount) {
                 null
             } else {

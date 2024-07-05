@@ -18,8 +18,9 @@ import com.drus.githubsearch.search.screens.search.presentation.adapter.GithubRe
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class SearchGithubRepositoryFragment : Fragment() {
+private const val TAG = "SearchFragment"
 
+class SearchGithubRepositoryFragment : Fragment() {
 
     private val viewModel by viewModels<SearchGithubRepositoryViewModel> {
         SearchGithubRepositoryViewModel.provideFactory(
@@ -29,8 +30,7 @@ class SearchGithubRepositoryFragment : Fragment() {
         )
     }
     private var _binding: FragmentSearchRepositoriesBinding? = null
-    private val binding get() = _binding!!
-
+    private val binding get() = requireNotNull(_binding)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +50,7 @@ class SearchGithubRepositoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeState()
         bindSearchInput()
-        bindRepositoryRecyclerView(savedInstanceState)
+        bindRepositoryRecyclerView()
     }
 
     private fun observeState() {
@@ -69,7 +69,7 @@ class SearchGithubRepositoryFragment : Fragment() {
     }
 
     private suspend fun uploadScreenInfo(state: SearchState) {
-        if(state.error.isBlank()) {
+        if (state.error.isBlank()) {
             binding.searchInputLayout.hideError()
         } else {
             binding.searchInputLayout.showError(state.error)
@@ -89,23 +89,13 @@ class SearchGithubRepositoryFragment : Fragment() {
         }
     }
 
-    private fun bindRepositoryRecyclerView(savedInstanceState: Bundle?) {
-        with(binding.recyclerView) {
-            layoutManager = LinearLayoutManager(requireContext())
-            layoutManager?.onRestoreInstanceState(
-                savedInstanceState?.getParcelable(RV_STATE)
-            )
-            adapter = githubRepositoriesAdapter
-        }
+    private fun bindRepositoryRecyclerView() = with(binding.recyclerView) {
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = githubRepositoriesAdapter
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private companion object {
-        private const val TAG = "SearchFragment"
-        const val RV_STATE = "$TAG:rvState"
     }
 }

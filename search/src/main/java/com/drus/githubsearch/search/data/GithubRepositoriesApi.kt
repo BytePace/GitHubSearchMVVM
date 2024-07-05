@@ -13,12 +13,12 @@ interface GithubRepositoriesApi {
     fun searchRepositories(
         @Query("q") keyWord: String,
         @Query("page") pageNum: Int,
-        @Query("per_page") sizePage: Int
+        @Query("per_page") sizePage: Int,
     ): Deferred<Response<RepositoryInfoListDto>>
 
     @GET("repos/{owner}/{repo}/branches/master")
     fun getRepositoryDetails(
         @Path("owner") owner: String,
-        @Path("repo") repo: String
+        @Path("repo") repo: String,
     ): Deferred<Response<RepositoryDetailsDto>>
 }

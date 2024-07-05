@@ -22,12 +22,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    @Suppress("DEPRECATION")
-    override fun onResume() {
-        super.onResume()
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-    }
-
     override fun onResumeFragments() {
         super.onResumeFragments()
         viewModel.processEvent(MainEvent.OnResumeFragments(navigator))

@@ -6,8 +6,6 @@ import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepo
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {
-
-    //    fun searchFlow() = FragmentScreen { SearchGithubRepositoryFlowFragment() }
     fun search() = FragmentScreen { SearchGithubRepositoryFragment() }
     fun repositoryDetails(info: SimpleRepositoryInfo) = FragmentScreen {
         GithubRepositoryDetailsFragment.newInstance(info)
