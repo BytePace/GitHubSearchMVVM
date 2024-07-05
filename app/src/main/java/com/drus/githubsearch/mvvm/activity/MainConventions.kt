@@ -8,7 +8,7 @@ data class MainState(
 )
 
 sealed interface MainEvent {
-    data class OnResumeFragments(val navigator: Navigator): MainEvent
+    data class OnResumeFragments(val navigator: Navigator) : MainEvent
 }
 
 sealed interface MainCommand

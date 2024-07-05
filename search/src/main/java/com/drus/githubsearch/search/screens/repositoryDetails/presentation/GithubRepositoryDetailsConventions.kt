@@ -12,6 +12,4 @@ sealed interface GithubRepositoryDetailsEvent {
     data object OnBackButtonClick : GithubRepositoryDetailsEvent
 }
 
-sealed interface GithubRepositoryDetailsCommand {
-
-}
+sealed interface GithubRepositoryDetailsCommand

@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 
-
 class GithubRepositoryPagingSource(
     private val api: GithubRepositoriesApi,
     private val query: String,
@@ -22,14 +21,16 @@ class GithubRepositoryPagingSource(
             val nextPageNumber = params.key ?: 1
             val response =
                 api.searchRepositories(keyWord = query, pageNum = nextPageNumber, sizePage = 15)
-            val result = response.await()
-            val nextPage = if (result.body()?.list?.size == result.body()?.totalCount) {
+                    .await()
+            if (!response.isSuccessful)
+                throw Exception(response.errorBody()?.string())
+            val nextPage = if (response.body()?.list?.size == response.body()?.totalCount) {
                 null
             } else {
                 nextPageNumber + 1
             }
             LoadResult.Page(
-                data = result.body()?.list?.map { it.toDomain() } ?: emptyList(),
+                data = response.body()?.list?.map { it.toDomain() } ?: emptyList(),
                 prevKey = null,
                 nextKey = nextPage,
             )

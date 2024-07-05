@@ -34,6 +34,7 @@ class App : Application(), AppComponentProvider,
         appComponent = DaggerAppComponent.builder()
             .baseDependencies(baseComponent)
             .build()
+            //TODO вынести создание featureComponent в feature module
         searchGithubRepositoryComponent = DaggerSearchGithubRepositoryComponent.builder()
             .searchGithubRepositoryModule(SearchGithubRepositoryModule())
             .baseDependencies(baseComponent)

@@ -1,5 +1,6 @@
 package com.drus.githubsearch.search.screens.repositoryDetails.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -36,21 +37,26 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
 
     override fun processEvent(event: GithubRepositoryDetailsEvent) {
         when (event) {
-            is GithubRepositoryDetailsEvent.OnBackButtonClick -> {
-                navigateBack()
-            }
+            is GithubRepositoryDetailsEvent.OnBackButtonClick -> navigateBack()
         }
     }
 
     private fun startInit(info: SimpleRepositoryInfo) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val details = githubRepository.getDetails(info)
-            emitNewState {
-                it.copy(
-                    screenState = LoadingContentError.Content,
-                    lastCommitDate = details?.commitDate ?: "",
-                )
+        viewModelScope.launch {
+            try {
+                val details = githubRepository.getDetails(info)
+                emitNewState {
+                    it.copy(
+                        screenState = LoadingContentError.Content,
+                        lastCommitDate = details?.commitDate ?: "",
+                    )
+                }
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                //TODO добавить обработку ошибок
+                Log.d("error", "errorMessage: ${t.localizedMessage}")
             }
+
         }
     }
 

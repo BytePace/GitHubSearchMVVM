@@ -1,5 +1,6 @@
 package com.drus.githubsearch.search.di
 
+import com.drus.githubsearch.core.utils.AppDispatchers
 import com.drus.githubsearch.core.utils.AppScope
 import com.drus.githubsearch.search.data.GitHubRepositoryImpl
 import com.drus.githubsearch.search.data.GithubRepositoriesApi
@@ -18,7 +19,10 @@ class SearchGithubRepositoryModule {
 
     @Provides
     @AppScope
-    fun provideRepository(service: GithubRepositoriesApi): GitHubRepository {
-        return GitHubRepositoryImpl(service)
+    fun provideRepository(
+        api: GithubRepositoriesApi,
+        dispatchers: AppDispatchers,
+    ): GitHubRepository {
+        return GitHubRepositoryImpl(githubRepositoriesApi = api, dispatchers = dispatchers)
     }
 }

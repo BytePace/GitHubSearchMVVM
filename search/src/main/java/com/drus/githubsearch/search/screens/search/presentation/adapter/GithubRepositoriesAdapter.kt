@@ -6,12 +6,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drus.githubsearch.search.databinding.ItemHolderRepositoryBinding
-import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
 import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
 
-class RepositoriesAdapter(
+class GithubRepositoriesAdapter(
     private val onItemSelected: (SimpleRepositoryInfo) -> Unit
-) : PagingDataAdapter<SimpleRepositoryInfo, RepositoriesAdapter.ViewHolder>(diffUtil) {
+) : PagingDataAdapter<SimpleRepositoryInfo, GithubRepositoriesAdapter.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))

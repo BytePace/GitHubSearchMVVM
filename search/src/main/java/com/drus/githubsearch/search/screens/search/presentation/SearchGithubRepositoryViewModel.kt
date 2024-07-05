@@ -1,12 +1,13 @@
 package com.drus.githubsearch.search.screens.search.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.drus.githubsearch.core.presentation.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
+import com.drus.githubsearch.core.utils.StringProvider
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.Screens
 import com.drus.githubsearch.search.domain.GitHubRepository
@@ -26,6 +27,7 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
     private val networkRepository: GitHubRepository,
     private val validationUtil: SearchValidationUtil,
     private val router: Router,
+    private val stringProvider: StringProvider,
 ) : BaseViewModel<SearchState, SearchEvent, SearchCommand>() {
 
     private var debounceJob: Job? = null
@@ -44,56 +46,47 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
         router.navigateTo(Screens.repositoryDetails(repositoryInfo))
     }
 
-//    val errorStateText: LiveData<Int?>
-//        get() = validationUtil.validationStatusLiveData.map {
-//            if (it.searchText.status != TextValidationStatus.CORRECT && it.searchText.showErrorState) {
-//                R.string.search_text_too_small_error
-//            } else {
-//                null
-//            }
-//        }
-
 
     private fun onSearchTextChanged(text: String) {
         validationUtil.validateSearchText(text, true)
-        if (validationUtil.validationStatusLiveData.value?.isAllValid == true) {
+        val validationValue = validationUtil.validationStatusLiveData.value
+        if (validationValue?.isAllValid == true) {
             emitNewState {
                 it.copy(error = "")
             }
             searchRepositories(text)
         } else {
-            val errorText = validationUtil.validationStatusLiveData.map {
-                if (it.searchText.status != TextValidationStatus.CORRECT && it.searchText.showErrorState) {
-                    R.string.search_text_too_small_error
-                } else {
-                    null
-                }
-            }
-            //TODO добавить стринг провайдер
-            if(errorText.value !=null) {
+            if (validationValue?.searchText?.status != TextValidationStatus.CORRECT &&
+                validationValue?.searchText?.showErrorState == true
+            ) {
                 emitNewState {
-                    it.copy(error = "Слишком короткий запрос")
+                    it.copy(error = stringProvider.getString(R.string.search_text_too_small_error))
                 }
             }
-
         }
     }
 
     private fun searchRepositories(keyword: String) {
         viewModelScope.launch {
-            debounceJob?.join()
-            debounceJob = viewModelScope.launch(coroutineContext) {
-                delay(UPLOAD_REPOSITORIES_DEBOUNCE_DELAY)
-                val flowOfRepositories =
-                    networkRepository.search(keyword, 0, 1).flow.cachedIn(viewModelScope)
-                emitNewState {
-                    it.copy(
-                        screenState = LoadingContentError.Content,
-                        repositories = flowOfRepositories,
-                    )
+            try {
+                debounceJob?.cancel()
+                debounceJob = viewModelScope.launch(coroutineContext) {
+                    delay(UPLOAD_REPOSITORIES_DEBOUNCE_DELAY)
+                    val flowOfRepositories =
+                        networkRepository.search(keyword, 0, 1).flow.cachedIn(viewModelScope)
+                    emitNewState {
+                        it.copy(
+                            screenState = LoadingContentError.Content,
+                            repositories = flowOfRepositories,
+                        )
+                    }
                 }
-                debounceJob = null
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                //TODO добавить обработку ошибок
+                Log.d("error", "errorMessage: ${t.localizedMessage}")
             }
+
         }
     }
 

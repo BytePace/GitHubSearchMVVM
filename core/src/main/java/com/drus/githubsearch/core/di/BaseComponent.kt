@@ -1,6 +1,9 @@
 package com.drus.githubsearch.core.di
 
+import com.drus.githubsearch.core.utils.AppDispatchers
+import com.drus.githubsearch.core.utils.AppDispatchersImpl
 import com.drus.githubsearch.core.utils.AppScope
+import com.drus.githubsearch.core.utils.StringProvider
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import dagger.Component
@@ -15,6 +18,8 @@ interface BaseComponent: BaseDependencies {
     override val retrofit: Retrofit
     override val navigationHolder: NavigatorHolder
     override val okHttpClient: OkHttpClient
+    override val stringProvider: StringProvider
+    override val dispatchers: AppDispatchers
 }
 
 interface BaseDependencies {
@@ -22,4 +27,6 @@ interface BaseDependencies {
     val navigationHolder: NavigatorHolder
     val retrofit: Retrofit
     val okHttpClient: OkHttpClient
+    val stringProvider: StringProvider
+    val dispatchers: AppDispatchers
 }

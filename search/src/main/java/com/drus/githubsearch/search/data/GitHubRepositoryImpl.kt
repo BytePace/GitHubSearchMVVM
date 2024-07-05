@@ -2,38 +2,34 @@ package com.drus.githubsearch.search.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.drus.githubsearch.core.utils.AppDispatchers
 import com.drus.githubsearch.search.domain.GitHubRepository
-import com.drus.githubsearch.search.data.models.RepositoryDetailsDto
-import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
-import com.drus.githubsearch.search.domain.models.RepositoryDetails
 import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GitHubRepositoryImpl @Inject constructor(
-    private val githubRepositoriesApi: GithubRepositoriesApi
+    private val githubRepositoriesApi: GithubRepositoriesApi,
+    private val dispatchers: AppDispatchers,
 ) : GitHubRepository {
 
-    override suspend fun getDetails(info: SimpleRepositoryInfo?): RepositoryDetails? {
+    override suspend fun getDetails(info: SimpleRepositoryInfo?) = withContext(dispatchers.io) {
         info ?: throw NullPointerException()
         val response = githubRepositoriesApi.getRepositoryDetails(
-            info.repositoryOwner.userName,
-            info.repositoryName
+            owner = info.repositoryOwner.userName,
+            repo = info.repositoryName,
         ).await()
         if (!response.isSuccessful)
             throw Exception(response.errorBody()?.string())
-        return response.body()?.toDomain()
+        response.body()?.toDomain()
     }
 
     override suspend fun search(
         keyword: String,
         from: Int,
         count: Int
-    ): Pager<Int, SimpleRepositoryInfo> = withContext(Dispatchers.IO) {
+    ): Pager<Int, SimpleRepositoryInfo> = withContext(dispatchers.io) {
         Pager(
-            // Configure how data is loaded by passing additional properties to
-            // PagingConfig, such as prefetchDistance.
             config = PagingConfig(pageSize = 15),
             pagingSourceFactory = {
                 GithubRepositoryPagingSource(

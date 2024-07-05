@@ -10,15 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.search.data.models.SimpleRepositoryInfoDto
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
 import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
-import com.drus.githubsearch.search.domain.models.SimpleRepositoryInfo
-import com.drus.githubsearch.search.screens.search.presentation.adapter.RepositoriesAdapter
-import kotlinx.coroutines.flow.Flow
+import com.drus.githubsearch.search.screens.search.presentation.adapter.GithubRepositoriesAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -45,7 +41,7 @@ class SearchGithubRepositoryFragment : Fragment() {
         return binding.root
     }
 
-    private val repositoriesAdapter = RepositoriesAdapter {
+    private val githubRepositoriesAdapter = GithubRepositoriesAdapter {
         viewModel.processEvent(SearchEvent.OnRepositoryClick(it))
     }
 
@@ -78,10 +74,9 @@ class SearchGithubRepositoryFragment : Fragment() {
         } else {
             binding.searchInputLayout.showError(state.error)
         }
-
         lifecycleScope.launch {
             state.repositories.collectLatest {
-                repositoriesAdapter.submitData(it)
+                githubRepositoriesAdapter.submitData(it)
             }
         }
     }
@@ -100,9 +95,8 @@ class SearchGithubRepositoryFragment : Fragment() {
             layoutManager?.onRestoreInstanceState(
                 savedInstanceState?.getParcelable(RV_STATE)
             )
-            adapter = repositoriesAdapter
+            adapter = githubRepositoriesAdapter
         }
-
     }
 
     override fun onDestroyView() {
