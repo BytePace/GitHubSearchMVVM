@@ -1,23 +1,18 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
-
+    namespace 'com.drus.githubsearch.mvvm.app'
     defaultConfig {
         applicationId "com.drus.githubsearch.mvvm"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion 23
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-    }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
     }
     buildTypes {
         release {
@@ -26,29 +21,29 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
-    implementation 'android.arch.paging:runtime:1.0.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-
-    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.2.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
 
     implementation project(":core")
-    implementation project(":networking")
+    implementation project(":search")
 
+    //Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
