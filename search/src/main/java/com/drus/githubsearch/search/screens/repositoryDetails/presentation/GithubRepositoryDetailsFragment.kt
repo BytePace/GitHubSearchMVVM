@@ -11,18 +11,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.core.utils.SaveClickListener
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.FragmentRepositoryDetailsBinding
-import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
+import com.drus.githubsearch.search.di.FlowComponentProvider
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import kotlinx.coroutines.launch
 
 class GithubRepositoryDetailsFragment : Fragment(R.layout.fragment_repository_details) {
 
-    private val viewModel by viewModels<GithubRepositoryDetailsViewModel> {
-        GithubRepositoryDetailsViewModel.provideFactory(
-            assistedFactory = (parentFragment as SearchGithubRepositoryComponentProvider)
+    private val viewModel by viewModels<RepositoryDetailsViewModel> {
+        RepositoryDetailsViewModel.provideFactory(
+            assistedFactory = (parentFragment as FlowComponentProvider)
                 .getSearchGithubRepositoryComponent()
                 .githubRepositoryDetailsViewModelFactory(),
             info = requireArguments().getParcelable(INFO),

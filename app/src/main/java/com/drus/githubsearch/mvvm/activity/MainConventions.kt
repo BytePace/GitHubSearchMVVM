@@ -6,4 +6,4 @@ data class MainState(
 
 sealed interface MainEvent
 
-sealed interface MainCommand
+sealed interface MainEffect

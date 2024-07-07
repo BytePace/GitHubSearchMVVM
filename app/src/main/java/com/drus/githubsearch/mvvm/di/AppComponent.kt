@@ -1,6 +1,8 @@
 package com.drus.githubsearch.mvvm.di
 
 import com.drus.githubsearch.core.di.BaseDependencies
+import com.drus.githubsearch.core.di.NavigationModule
+import com.drus.githubsearch.core.di.NetworkModule
 import com.drus.githubsearch.core.utils.AppScope
 import com.drus.githubsearch.mvvm.activity.MainViewModel
 import com.github.terrakok.cicerone.Router
@@ -12,7 +14,9 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-    ], dependencies = [BaseDependencies::class]
+        NavigationModule::class,
+    ],
+    dependencies = [BaseDependencies::class]
 )
 interface AppComponent : BaseDependencies {
     fun mainViewModelFactory(): MainViewModel.Factory

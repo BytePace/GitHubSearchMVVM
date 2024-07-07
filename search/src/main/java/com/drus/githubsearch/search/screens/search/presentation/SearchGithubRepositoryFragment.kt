@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.search.R
 import com.drus.githubsearch.search.databinding.FragmentSearchRepositoriesBinding
-import com.drus.githubsearch.search.di.SearchGithubRepositoryComponentProvider
+import com.drus.githubsearch.search.di.FlowComponentProvider
 import com.drus.githubsearch.search.screens.repositoryDetails.presentation.GithubRepositoryDetailsFragment
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.search.presentation.adapter.RepositoriesAdapter
@@ -26,9 +26,9 @@ import kotlinx.coroutines.launch
 class SearchGithubRepositoryFragment : Fragment() {
 
 
-    private val viewModel by viewModels<SearchGithubRepositoryViewModel> {
-        SearchGithubRepositoryViewModel.provideFactory(
-            (parentFragment as SearchGithubRepositoryComponentProvider).getSearchGithubRepositoryComponent()
+    private val viewModel by viewModels<SearchRepositoryViewModel> {
+        SearchRepositoryViewModel.provideFactory(
+            (parentFragment as FlowComponentProvider).getSearchGithubRepositoryComponent()
                 .searchGithubRepositoryViewModelFactory()
         )
     }

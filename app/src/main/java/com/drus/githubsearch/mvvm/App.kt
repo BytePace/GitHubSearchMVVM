@@ -10,9 +10,6 @@ import com.drus.githubsearch.core.di.NetworkModule
 import com.drus.githubsearch.mvvm.di.AppComponent
 import com.drus.githubsearch.mvvm.di.AppComponentProvider
 import com.drus.githubsearch.mvvm.di.DaggerAppComponent
-import com.drus.githubsearch.search.di.SearchComponentDependencies
-import com.github.terrakok.cicerone.Router
-import retrofit2.Retrofit
 
 class App : Application(), AppComponentProvider,
     BaseComponentProvider {

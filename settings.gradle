@@ -20,7 +20,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "GitHubSearchMVVM"
+
 include ':core'
+include ':core:ui:compose'
+include ':core:ui:view'
+
 include ':networking'
 include ':app'
 include ':search'

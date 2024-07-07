@@ -3,7 +3,7 @@ package com.drus.githubsearch.search.screens.repositoryDetails.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.drus.githubsearch.core.presentation.BaseViewModel
+import com.drus.githubsearch.core.mvi.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
@@ -14,7 +14,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GithubRepositoryDetailsViewModel @AssistedInject constructor(
+class RepositoryDetailsViewModel @AssistedInject constructor(
     private val githubRepository: GitHubRepository,
     private val router: Router,
     @Assisted private val repositoryInfo: SimpleRepositoryInfo?,
@@ -59,7 +59,7 @@ class GithubRepositoryDetailsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(info: SimpleRepositoryInfo?): GithubRepositoryDetailsViewModel
+        fun create(info: SimpleRepositoryInfo?): RepositoryDetailsViewModel
     }
 
     @Suppress("UNCHECKED_CAST")

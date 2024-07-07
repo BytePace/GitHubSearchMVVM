@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.drus.githubsearch.core.presentation.BaseViewModel
+import com.drus.githubsearch.core.mvi.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
 import com.drus.githubsearch.search.Screens
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 private const val UPLOAD_REPOSITORIES_DEBOUNCE_DELAY = 500L
 
-class SearchGithubRepositoryViewModel @AssistedInject constructor(
+class SearchRepositoryViewModel @AssistedInject constructor(
     private val networkRepository: GitHubRepository,
     private val validationUtil: SearchValidationUtil,
     private val router: Router,
@@ -78,7 +78,7 @@ class SearchGithubRepositoryViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(): SearchGithubRepositoryViewModel
+        fun create(): SearchRepositoryViewModel
     }
 
     @Suppress("UNCHECKED_CAST")

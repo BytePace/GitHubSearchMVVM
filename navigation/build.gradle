@@ -34,12 +34,13 @@ android {
 }
 
 dependencies {
-
     implementation(project(':core'))
 
     implementation 'androidx.fragment:fragment-ktx:1.5.1'
     implementation "com.github.terrakok:cicerone:7.1"
 
-    kapt "com.google.dagger:dagger:2.40.5"
+    implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 }
