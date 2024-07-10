@@ -8,9 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class BaseModule(
-    private val application: Application,
-) {
+class BaseModule(private val application: Application) {
 
     @Provides
     @AppScope

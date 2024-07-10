@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.drus.githubsearch.core.mvi.BaseViewModel
 import com.drus.githubsearch.core.utils.LoadingContentError
-import com.drus.githubsearch.search.Screens
+import com.drus.githubsearch.search.InternalScreens
 import com.drus.githubsearch.search.screens.search.data.models.SimpleRepositoryInfo
 import com.drus.githubsearch.search.screens.search.domain.GitHubRepository
 import com.drus.githubsearch.search.screens.search.validation.SearchValidationUtil
@@ -38,7 +38,7 @@ class SearchRepositoryViewModel @AssistedInject constructor(
     }
 
     private fun navigateToRepositoryDetails(repositoryInfo: SimpleRepositoryInfo) {
-        router.navigateTo(Screens.repositoryDetails(repositoryInfo))
+        router.navigateTo(InternalScreens.repositoryDetails(repositoryInfo))
     }
 
 //    val errorStateText: LiveData<Int?>

@@ -1,5 +1,5 @@
 package com.drus.githubsearch.mvvm.di
 
 interface AppComponentProvider {
-    fun getAppComponent(): AppComponent
+    val appComponent: AppComponent
 }

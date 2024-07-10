@@ -6,7 +6,7 @@ import com.drus.githubsearch.search.screens.repositoryDetails.presentation.Githu
 import com.drus.githubsearch.search.screens.search.presentation.SearchGithubRepositoryFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
-internal object Screens {
+internal object InternalScreens {
 
     fun searchFlow() = FragmentScreen { FlowFragment() }
     fun search() = FragmentScreen { SearchGithubRepositoryFragment() }

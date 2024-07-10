@@ -27,7 +27,9 @@ class FlowFragment : Fragment(), FlowComponentProvider {
         super.onAttach(context)
         flowComponent = DaggerSearchGithubRepositoryComponent.builder()
             .searchGithubRepositoryModule(SearchGithubRepositoryModule())
-            .baseDependencies((requireActivity().application as BaseComponentProvider).getBaseComponent())
+            .baseDependencies(
+                (requireActivity().application as BaseComponentProvider).getBaseComponent()
+            )
             .build()
     }
 

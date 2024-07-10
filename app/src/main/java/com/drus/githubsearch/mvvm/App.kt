@@ -11,10 +11,13 @@ import com.drus.githubsearch.mvvm.di.AppComponent
 import com.drus.githubsearch.mvvm.di.AppComponentProvider
 import com.drus.githubsearch.mvvm.di.DaggerAppComponent
 
-class App : Application(), AppComponentProvider,
-    BaseComponentProvider {
-    private lateinit var appComponent: AppComponent
-    private lateinit var baseComponent: BaseComponent
+class App : Application(), AppComponentProvider, BaseComponentProvider {
+
+    override lateinit var appComponent: AppComponent
+        private set
+    override lateinit var baseComponent: BaseComponent
+        private set
+
     override fun onCreate() {
         initDagger()
         super.onCreate()
@@ -31,11 +34,4 @@ class App : Application(), AppComponentProvider,
             .build()
     }
 
-    override fun getAppComponent(): AppComponent {
-        return appComponent
-    }
-
-    override fun getBaseComponent(): BaseComponent {
-        return baseComponent
-    }
 }
